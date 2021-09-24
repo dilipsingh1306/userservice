@@ -2,6 +2,8 @@ package com.eclasses.user.dto;
 
 public class UserUpdateDTO {
 
+	private String emailId;
+
 	private String mobileNumber;
 
 	private String firstName;
@@ -11,13 +13,23 @@ public class UserUpdateDTO {
 	private String password;
 
 	public UserUpdateDTO() {
+		super();
 	}
 
-	public UserUpdateDTO(String mobileNumber, String firstName, String lastName, String password) {
+	public UserUpdateDTO(String emailId, String mobileNumber, String firstName, String lastName, String password) {
+		this.emailId = emailId;
 		this.mobileNumber = mobileNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	public String getPassword() {

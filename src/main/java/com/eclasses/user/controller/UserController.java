@@ -74,7 +74,7 @@ public class UserController {
 
 	}
 
-	@GetMapping(path = "/{emailId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@GetMapping(path = "/{emailId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<UserRegistertResponse> getUserDetails(@PathVariable String emailId) {
 
 		log.info("Lookup User Id : " + emailId);
@@ -88,11 +88,11 @@ public class UserController {
 			response.setFirstName(userData.getFirstName());
 			response.setLastName(userData.getLastName());
 			response.setMobileNumber(userData.getMobileNumber());
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<UserRegistertResponse>(response, HttpStatus.OK);
 
 		} else {
 
-			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<UserRegistertResponse>(response, HttpStatus.NOT_FOUND);
 
 		}
 

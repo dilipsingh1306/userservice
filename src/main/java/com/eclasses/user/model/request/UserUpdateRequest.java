@@ -1,4 +1,4 @@
-package com.eclasses.user.request;
+package com.eclasses.user.model.request;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

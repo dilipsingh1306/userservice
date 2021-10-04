@@ -1,4 +1,6 @@
-package com.eclasses.user.entity;
+package com.eclasses.user.data.entity;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,22 +9,24 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_details")
-public class UserRegisterEntity {
+public class UserRegisterEntity implements Serializable{
+
+	private static final long serialVersionUID = 3350865577741527647L;
 
 	@Id
 	@Column(name = "user_email_id")
 	private String emailId;
 
-	@Column(name = "mobile_number")
+	@Column(name = "mobile_number",nullable = false, unique = true)
 	private String mobileNumber;
 
-	@Column(name = "first_name")
+	@Column(name = "first_name",nullable = false)
 	private String firstName;
 
-	@Column(name = "last_name")
+	@Column(name = "last_name",nullable = false)
 	private String lastName;
 
-	@Column(name = "password")
+	@Column(name = "password",nullable = false)
 	private String password;
 
 	public UserRegisterEntity() {

@@ -1,4 +1,4 @@
-package com.eclasses.user.request;
+package com.eclasses.user.model.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

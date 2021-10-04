@@ -1,19 +1,27 @@
-package com.eclasses.user.model;
+package com.eclasses.user.model.response;
 
-public class UserDetailsModel {
+public class UserRegistertResponse {
 
 	private String mobileNumber;
 	private String firstName;
 	private String lastName;
 
-	public UserDetailsModel() {
+	public UserRegistertResponse() {
 		super();
 	}
 
-	public UserDetailsModel(String mobileNumber, String firstName, String lastName) {
+	public UserRegistertResponse(String mobileNumber, String firstName, String lastName) {
 		super();
 		this.mobileNumber = mobileNumber;
 		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -32,14 +40,5 @@ public class UserDetailsModel {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
 
 }

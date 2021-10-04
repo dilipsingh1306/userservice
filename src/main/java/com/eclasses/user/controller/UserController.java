@@ -2,6 +2,8 @@ package com.eclasses.user.controller;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eclasses.user.dto.UserDetailsDTO;
 import com.eclasses.user.dto.UserRegisterDTO;
 import com.eclasses.user.dto.UserUpdateDTO;
-import com.eclasses.user.model.UserDetailsModel;
-import com.eclasses.user.request.UserRegisterRequest;
-import com.eclasses.user.request.UserUpdateRequest;
-import com.eclasses.user.response.UserRegistertResponse;
+import com.eclasses.user.model.request.UserRegisterRequest;
+import com.eclasses.user.model.request.UserUpdateRequest;
+import com.eclasses.user.model.response.UserRegisterResponseModel;
+import com.eclasses.user.model.response.UserRegistertResponse;
 import com.eclasses.user.service.UserService;
 
 @RestController
@@ -37,23 +40,21 @@ public class UserController {
 	private Environment env;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registerUser(@Valid @RequestBody UserRegisterRequest request) {
+	public ResponseEntity<UserRegisterResponseModel> registerUser(@Valid @RequestBody UserRegisterRequest request) {
 
 		log.info("\nEmail Id : " + request.getEmailId() + " \nPassword : " + request.getPassword() + " \nMobile Numer : " + request.getMobileNumber() + " \nFirst Name : "
 				+ request.getFirstName() + " \nLast Name : " + request.getLastName());
 
 		log.info("User Registration Started ");
 
-		UserRegisterDTO dto = new UserRegisterDTO();
-		dto.setEmailId(request.getEmailId());
-		dto.setFirstName(request.getFirstName());
-		dto.setLastName(request.getLastName());
-		dto.setMobileNumber(request.getMobileNumber());
-		dto.setPassword(request.getPassword());
+		ModelMapper mapper = new ModelMapper();
+		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		String response = service.registerUser(dto);
+		UserRegisterDTO dto =  service.registerUser(mapper.map(request, UserRegisterDTO.class));
 
-		return response;
+		UserRegisterResponseModel reponse = mapper.map(dto, UserRegisterResponseModel.class);
+
+		return new ResponseEntity<UserRegisterResponseModel>(reponse, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/update/{emailId}", consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
@@ -84,7 +85,7 @@ public class UserController {
 		log.info("Lookup User Id : " + emailId);
 
 		UserRegistertResponse response = null;
-		UserDetailsModel userData = service.getUserDetails(emailId);
+		UserDetailsDTO userData = service.getUserDetails(emailId);
 
 		if (userData != null) {
 

@@ -14,7 +14,7 @@ public class UserRegisterResponseModel implements Serializable{
 
 	private String lastName;
 
-	private String password;
+	//private String password;
 
 	public String getEmailId() {
 		return emailId;
@@ -48,12 +48,10 @@ public class UserRegisterResponseModel implements Serializable{
 		this.lastName = lastName;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	/*
+	 * public String getPassword() { return password; }
+	 * 
+	 * public void setPassword(String password) { this.password = password; }
+	 */
 
 }

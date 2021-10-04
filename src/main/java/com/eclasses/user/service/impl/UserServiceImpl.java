@@ -7,6 +7,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.eclasses.user.data.entity.UserRegisterEntity;
@@ -22,13 +24,23 @@ public class UserServiceImpl implements UserService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
+	UserRepoistory repository = null;
+	BCryptPasswordEncoder encoder = null;
+
 	@Autowired
-	UserRepoistory repository;
+	public UserServiceImpl(UserRepoistory repository, BCryptPasswordEncoder encoder) {
+		this.repository = repository;
+		this.encoder = encoder;
+
+	}
 
 	@Override
 	public UserRegisterDTO registerUser(UserRegisterDTO dto) {
 
 		log.info("Registering User");
+
+		// Password Encryption
+		dto.setPassword(encoder.encode(dto.getPassword()));
 
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

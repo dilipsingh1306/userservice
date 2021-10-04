@@ -38,7 +38,7 @@ public class UserController {
 
 	@Autowired
 	private Environment env;
-
+	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<UserRegisterResponseModel> registerUser(@Valid @RequestBody UserRegisterRequest request) {
 
@@ -51,6 +51,9 @@ public class UserController {
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 		UserRegisterDTO dto =  service.registerUser(mapper.map(request, UserRegisterDTO.class));
+		
+		//Encrypt Password
+		
 
 		UserRegisterResponseModel reponse = mapper.map(dto, UserRegisterResponseModel.class);
 

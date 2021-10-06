@@ -38,8 +38,9 @@ public class UserController {
 
 	@Autowired
 	private Environment env;
-	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<UserRegisterResponseModel> registerUser(@Valid @RequestBody UserRegisterRequest request) {
 
 		log.info("\nEmail Id : " + request.getEmailId() + " \nPassword : " + request.getPassword() + " \nMobile Numer : " + request.getMobileNumber() + " \nFirst Name : "
@@ -50,10 +51,9 @@ public class UserController {
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-		UserRegisterDTO dto =  service.registerUser(mapper.map(request, UserRegisterDTO.class));
-		
-		//Encrypt Password
-		
+		UserRegisterDTO dto = service.registerUser(mapper.map(request, UserRegisterDTO.class));
+
+		// Encrypt Password
 
 		UserRegisterResponseModel reponse = mapper.map(dto, UserRegisterResponseModel.class);
 
@@ -82,13 +82,13 @@ public class UserController {
 
 	}
 
-	@GetMapping(path = "/{emailId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(path = "/{emailId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<UserRegistertResponse> getUserDetails(@PathVariable String emailId) {
 
 		log.info("Lookup User Id : " + emailId);
 
 		UserRegistertResponse response = null;
-		UserDetailsDTO userData = service.getUserDetails(emailId);
+		UserDetailsDTO userData = service.getUserDetailsByEmailId(emailId);
 
 		if (userData != null) {
 

@@ -1,5 +1,6 @@
 package com.eclasses.user.service.impl;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -8,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -77,7 +81,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetailsDTO getUserDetails(String emailId) {
+	public UserDetailsDTO getUserDetailsByEmailId(String emailId) {
 
 		UserDetailsDTO userDetails = null;
 
@@ -88,6 +92,7 @@ public class UserServiceImpl implements UserService {
 			userDetails.setFirstName(record.get().getFirstName());
 			userDetails.setLastName(record.get().getLastName());
 			userDetails.setMobileNumber(record.get().getMobileNumber());
+			userDetails.setEmailId(record.get().getEmailId());
 		} else {
 			log.info("User Not Found with email Id : " + emailId);
 		}
@@ -95,4 +100,17 @@ public class UserServiceImpl implements UserService {
 		return userDetails;
 	}
 
+	@Override
+	public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
+
+		UserRegisterEntity entity = repository.findByEmailId(emailId);
+		if (entity == null) {
+			throw new UsernameNotFoundException(emailId);
+		}
+
+		return new User(entity.getEmailId(), entity.getPassword(), true, true, true, true, new ArrayList<>());
+	}
+	
+	
+	
 }

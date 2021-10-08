@@ -108,7 +108,10 @@ public class UserController {
 
 	@GetMapping("/env/port")
 	public String getConnectedPort() {
+		
+		log.info("Test properties from config server : api.gateway.token "+env.getProperty("api.gateway.token"));
 		return "Port Connected is " + env.getProperty("local.server.port");
+		
 	}
 
 }

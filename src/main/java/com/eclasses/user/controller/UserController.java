@@ -25,7 +25,7 @@ import com.eclasses.user.dto.UserUpdateDTO;
 import com.eclasses.user.model.request.UserRegisterRequest;
 import com.eclasses.user.model.request.UserUpdateRequest;
 import com.eclasses.user.model.response.UserRegisterResponseModel;
-import com.eclasses.user.model.response.UserRegistertResponse;
+import com.eclasses.user.model.response.UserDetailsObject;
 import com.eclasses.user.service.UserService;
 
 @RestController
@@ -83,24 +83,32 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/{emailId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<UserRegistertResponse> getUserDetails(@PathVariable String emailId) {
+	public ResponseEntity<UserDetailsObject> getUserDetails(@PathVariable String emailId) {
 
 		log.info("Lookup User Id : " + emailId);
 
-		UserRegistertResponse response = null;
+		UserDetailsObject response = null;
 		UserDetailsDTO userData = service.getUserDetailsByEmailId(emailId);
 
 		if (userData != null) {
 
-			response = new UserRegistertResponse();
-			response.setFirstName(userData.getFirstName());
-			response.setLastName(userData.getLastName());
-			response.setMobileNumber(userData.getMobileNumber());
-			return new ResponseEntity<UserRegistertResponse>(response, HttpStatus.OK);
+			//response = new UserDetailsObject();
+			
+			/*
+			 * response.setFirstName(userData.getFirstName());
+			 * response.setLastName(userData.getLastName());
+			 * response.setMobileNumber(userData.getMobileNumber());
+			 * response.setEmailId(userData.getEmailId());
+			 */
+			ModelMapper mapper = new ModelMapper();
+			
+			response = mapper.map(userData, UserDetailsObject.class);
+			
+			return new ResponseEntity<UserDetailsObject>(response, HttpStatus.OK);
 
 		} else {
 
-			return new ResponseEntity<UserRegistertResponse>(response, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<UserDetailsObject>(response, HttpStatus.NOT_FOUND);
 
 		}
 

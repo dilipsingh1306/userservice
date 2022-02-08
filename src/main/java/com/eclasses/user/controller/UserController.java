@@ -38,6 +38,8 @@ public class UserController {
 
 	@Autowired
 	private Environment env;
+	
+	String test;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
@@ -56,6 +58,8 @@ public class UserController {
 		// Encrypt Password
 
 		UserRegisterResponseModel reponse = mapper.map(dto, UserRegisterResponseModel.class);
+		
+		System.out.println(test);
 
 		return new ResponseEntity<UserRegisterResponseModel>(reponse, HttpStatus.CREATED);
 	}
@@ -75,6 +79,8 @@ public class UserController {
 		dto.setLastName(request.getLastName());
 		dto.setMobileNumber(request.getMobileNumber());
 		dto.setPassword(request.getPassword());
+		
+		System.out.println(test);
 
 		String response = service.updateUser(dto);
 
